@@ -150,3 +150,4 @@ server {
 ![Step 1](/assets/img/chrome-p1.png)
 ![Step 2](/assets/img/chrome-p2.png)
 ![Step 1](/assets/img/chrome-p3.png)
+![Step 1](/assets/img/chrome-p4.png)

@@ -82,3 +82,65 @@ cp "$SRV_KEY" "$SRV_FINAL_KEY"
 cp "$SRV_CRT" "$SRV_FINAL_CRT"
 
 ```
+
+### Use case
+
+#### Nginx
+
+A template to let manage your SSL/TLS virtual host in site-available(enable)
+
+
+```bash
+server {
+	listen 80;
+	#listen [::]:80;
+	server_name trixie.local;
+
+	return 301 https://$server_name$request_uri;
+}
+
+
+server {	
+	listen 443 ssl;
+	#listen [::]:443 ssl;
+	server_name trixie.local;
+	http2 on;
+	
+	access_log  /var/log/nginx/trixie.local/access.log;
+	error_log  /var/log/nginx/trixie.local/error.log;
+
+	location / {
+		try_files $uri $uri/ =404;
+		# kill cache
+	        add_header Last-Modified $date_gmt;
+        	add_header Cache-Control 'no-store, no-cache';
+	        if_modified_since off;
+        	expires off;
+	        etag off;
+	}
+
+	ssl_certificate /home/pierre/certs/trixie.local.crt;
+	ssl_certificate_key /home/pierre/certs/trixie.local.key;
+		
+	# Modern SSL setup
+	ssl_protocols TLSv1.2 TLSv1.3;
+	ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384';
+	ssl_prefer_server_ciphers on;
+    
+	# SSL optimization
+	ssl_session_timeout 1d;
+	ssl_session_cache shared:SSL:10m;
+	ssl_session_tickets off;
+    
+	# HSTS (optional, but recommended)
+	add_header Strict-Transport-Security "max-age=63072000" always;
+
+
+	root /home/pierre/tmp/mav2026/src/;
+	
+	index index.html index.htm;
+}
+
+```
+
+

@@ -2,7 +2,7 @@
 
 Self-signed openssl certs for local lan devices
 
-Because openssl processes change through various version, here you can find two usefull bash files to automate the self signed process generation.
+Because openssl processes change through various versions, here you can find two usefull bash files to automate the self signed process generation.
 
 Here we are dealing with openssl v3 and above versions.
 
@@ -21,13 +21,19 @@ Then no bothering SSL/TLS message will be displayed any more trying to reach you
 
 CA_KEY='ca.key'
 CA_PEM='ca.pem'
+CA_DAYS=365
+CA_KEY_SIZE=2048
 
-openssl genrsa -des3 -out "$CA_KEY" 2048
+openssl genrsa \
+	-des3 \
+	-out "$CA_KEY" \
+	"$CA_KEY_SIZE"
 
-openssl req -x509 -new -nodes \
+openssl req -x509 \
+	-new -nodes \
 	-key "$CA_KEY" \
 	-sha256 \
-	-days 365 \
+	-days "$CA_DAYS" \
 	-out "$CA_PEM"
 ```
 

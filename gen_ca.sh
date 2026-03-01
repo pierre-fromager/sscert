@@ -2,12 +2,18 @@
 
 CA_KEY='ca.key'
 CA_PEM='ca.pem'
+CA_DAYS=365
+CA_KEY_SIZE=2048
 
-openssl genrsa -des3 -out "$CA_KEY" 2048
+openssl genrsa \
+	-des3 \
+	-out "$CA_KEY" \
+	"$CA_KEY_SIZE"
 
-openssl req -x509 -new -nodes \
+openssl req -x509 \
+	-new -nodes \
 	-key "$CA_KEY" \
 	-sha256 \
-	-days 365 \
+	-days "$CA_DAYS" \
 	-out "$CA_PEM"
 

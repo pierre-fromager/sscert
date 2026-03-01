@@ -87,7 +87,7 @@ cp "$SRV_CRT" "$SRV_FINAL_CRT"
 
 #### Nginx
 
-A template to let manage your SSL/TLS virtual host in site-available(enable)
+A template to let manage your SSL/TLS virtual host in sites-available(enable)
 
 
 ```bash
